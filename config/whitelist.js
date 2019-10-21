@@ -8,9 +8,6 @@ const adminAccount = [
 	'tuteng',
 	'banli',
 	'bihao',
-	'孙吕特',
-	'周柏民',
-	'王立新'
 ];
 const operationAccount = [
 	'wangjingao'
