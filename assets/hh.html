@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel=icon sizes=any mask="" href=//s2.btbcdn.com/btb-logo.png>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>必投前端发布平台</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <header class="page-header">
+      <a href="/">
+        <img src="/logo.jpg" class="logo">
+        <span class="logo-name">必投前端发布平台</span>
+      </a>
+  </header>
+  <section id="content" class="main-content">
+   <section class="slide-bar">
+      <h2 {% if not current.repo %}class="active-info"{% endif %}>
+        <a href="/">仓库列表</a>
+      </h2>
+      <dl>
+      		{% for item in repos %}
+		  	<dd {% if ((current.group + '/' + current.repo) === (item.group + '/' + item.repo))  %}class="active"{% endif %}>
+	          <a href="/repo/{{item.group}}/{{item.repo}}">
+	            <span>
+	            	{{item.group}}/<strong>{{item.repo}}</strong>
+	            </span>
+	          </a>
+        	</dd>
+			{% endfor %}
+      </dl>
+    </section>
+    <style type="text/css">
+      .log-content dl {
+        margin-left: 10px;
+        margin-bottom: 20px;
+      }
+      .log-content dl dt {
+        font-size: 14px;
+        font-weight: 400;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+      }
+       .log-content dl dd {
+        margin-left: 2em;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 30px;
+
+       }
+    </style>
+    <section class="log-content">
+	    <h2 class="log-header">使用教程</h2>
+	    <dl>
+        <dt>测试环境</dt>
+        <dd>1、将代码merge到dev(gray)分支，并推送远程</dd>
+        <dd>2、访问地址：http://dev.btb-inc.com/group/repo/</dd>
+        <dd>3、package.json里保障有build-dev任务</dd>
+      </dl>
+      <dl>
+        <dt>线上环境</dt>
+        <dd>1、打tag推送远程</dd>
+        <dd>2、访问地址：http://h5.btb-inc.com/group/repo/</dd>
+        <dd>3、package.json里保障有build任务</dd>
+      </dl>
+      <dl>
+        <dt>注意事项</dt>
+        <dd>1、本地不要构建</dd>
+        <dd>2、如果期望页面访问特殊的路径需要额外配置</dd>
+        <dd>3、group和repo的命名不要是这些的关键字：js、css、font、api</dd>
+      </dl>
+    </section>
+  </section>
+  <div class="copyright">
+  	CopyRight &copy; 2018 BTB All Rights Reserved.
+  </div>
+</body>
+</html>

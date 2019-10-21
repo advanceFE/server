@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel=icon sizes=any mask="" href=//s2.btbcdn.com/btb-logo.png>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>必投前端发布平台</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+	<style>
+		.login_a{
+			float: right;
+			display: inline-block;
+			margin-right: 20px;
+		}
+	</style>
+</head>
+<body>
+  <header class="page-header">
+      <a href="/">
+        <img src="/logo.jpg" class="logo">
+        <span class="logo-name">必投前端发布平台</span>
+      </a>
+	  <a class="login_a" href="https://oapi.dingtalk.com/connect/qrconnect?appid=dingoaionks6jvozdgyp69&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http://hook.btb-inc.com?fromdingding">登录</a>
+  </header>
+  <section id="content" class="main-content">
+   <section class="slide-bar">
+      <h2 {% if not current.repo %}class="active-info"{% endif %}>
+        <a href="/">仓库列表</a>
+      </h2>
+      <dl>
+      		{% for item in repos %}
+		  	<dd {% if ((current.group + '/' + current.repo) === (item.group + '/' + item.repo))  %}class="active"{% endif %}>
+	          <a href="/repo/{{item.group}}/{{item.repo}}">
+	            <span>
+	            	{{item.group}}/<strong>{{item.repo}}</strong>
+	            </span>
+	          </a>
+        	</dd>
+			{% endfor %}
+      </dl>
+    </section>
+
+    <section class="log-content">
+	    <h2 class="log-header"> 发布记录</h2>
+	    {% if current.tag %}
+	    <div class="current-version">
+	    	共{{count}}条记录，当前线上版本：<strong>{{current.tag}}</strong>
+	    </div>
+	    {% endif %}
+	    <table class="log-table">
+	    	<thead>
+	    		<th style="width: 10%">
+	    			版本
+	    		</th>
+	    		<th style="width: 18%">
+	    			构建人
+	    		</th>
+	    		<th style="width: 25%">
+	    			发布备注
+	    		</th>
+	    		<th style="width: 18%">
+	    			构建时间
+	    		</th>
+	    		<th  style="width: 18%">
+	    			发布时间
+	    		</th>
+	    		<th>
+	    			操作
+	    		</th>
+	    	</thead>
+	    	<tbody>
+	    		{% for item in tags %}
+				  	<tr>
+		    			<td>
+		    				{{item.tag}}
+		    			</td>
+		    			<td>
+		    				{{item.userEmail}}
+		    			</td>
+		    			<td>
+		    				{{item.buildLog}}
+		    			</td>
+		    			<td>
+		    				{{item.time}}
+		    			</td>
+		    			<td>
+		    				{{item.buildTime}}
+		    			</td>
+		    			<td>
+		    				{% if (current.tag != item.tag)%}
+		    				<a href="javascript:void(0)" class="J_RollBack" data-tag="{{item.tag}}">发布</a>
+		    				{% endif %}
+		    				<a class="preview J_Preview" href="javascript:void(0)" old-href="http://192.168.11.155:8118/{{item.group}}/{{item.repo}}/{{item.tag}}/" data-params="{{item.group}}~{{item.repo}}~{{item.tag}}">预览</a>
+		    			</td>
+		    		</tr>
+		    		{% else %}
+		    		<tr>
+		    			<td colspan="6">
+		    				暂无发布记录
+		    			</td>
+		    		</tr>
+				{% endfor %}
+	    	</tbody>
+	    </table>
+	    <div id="J_Page"></div>
+	    <script type="text/javascript" src="/main.js"></script>
+	    <script type="text/javascript">
+	    	(function() {
+	    		window.PageConfig = {
+	    			totalPage: '{{totalPage}}',
+	    			// current._id 不是字符串且无法删除
+	    			current: {
+					  group: '{{current.group}}',
+					  repo: '{{current.repo}}',
+					  tag: '{{current.tag}}',
+					  userEmail:  '{{current.userEmail}}',
+					  time: '{{current.time}}'
+	    			},
+	    			pageNumber: '{{pageNumber}}'
+	    		}
+	    		var ins = {
+	    			init() {
+	    				this.renderPage()
+	    				this.rollback()
+	    			},
+	    			renderPage(){
+	    				if (PageConfig.totalPage) {
+				    		const slp = new SimplePagination(PageConfig.totalPage)
+							slp.init({
+							  container: '#J_Page',
+							  maxShowBtnCount: 3,
+							  onPageChange: state => {
+							  	location.href = `/repo/${PageConfig.current.group}/${PageConfig.current.repo}/${state.pageNumber}`
+							  }
+							})
+							slp.gotoPage(PageConfig.pageNumber, true)
+				    	}
+	    			},
+	    			preview () {
+
+	    			},
+	    			rollback() {
+	    				document.addEventListener('click', (e) => {
+	    					let target = e.target
+	    					if (e.target.classList.contains('J_RollBack')) {
+	    						let tag = target.getAttribute('data-tag')
+	    						// let buildLog = prompt(`请输入${PageConfig.current.group}/${PageConfig.current.repo} ${tag}的发布日志  `)
+	    						let buildLog = prompt(`请输入${tag}版本的发布日志：`)
+	    						if(!buildLog) return
+	    						fetch('/repoapi/rollback', {
+								    body: JSON.stringify({
+								    	tag,
+								    	group: PageConfig.current.group,
+								    	repo: PageConfig.current.repo,
+								    	buildLog: buildLog
+									}),
+								    method: 'POST',
+								    credentials: "include"
+								  })
+								  .then(response => response.json())
+								  .then(res => {
+								  	if (res.code) {
+								  		alert(res.msg)
+								  	} else {
+								  		location.reload()
+								  	}
+								  	// location.reload()
+								  })
+	    					} else if(e.target.classList.contains('J_Preview')) {
+	    						let params = target.getAttribute('data-params').split('~')
+									fetch('/preview', {
+								    body: JSON.stringify({
+								    	group: params[0],
+											repo: params[1],
+											tag: params[2]
+									}),
+								    method: 'POST',
+								    credentials: "include"
+								  })
+									.then(response => response.json())
+									.then(res => {
+										setTimeout(() => {
+											location.href = res.data.url
+										}, 100)
+									})
+	    					}
+	    				}, false)
+	    			}
+	    		}
+	    		ins.init()
+	    	})()
+	    </script>
+    </section>
+  </section>
+  <div class="copyright">
+  	CopyRight &copy; 2018 BTB All Rights Reserved.
+  </div>
+  <a href="/log" class="log-entry" target="_blank"></a>
+</body>
+</html>

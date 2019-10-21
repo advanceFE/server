@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel=icon sizes=any mask="" href=//s2.btbcdn.com/btb-logo.png>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>必投前端发布平台</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <header class="page-header">
+      <a href="/">
+        <img src="/logo.jpg" class="logo">
+        <span class="logo-name">必投前端发布平台</span>
+      </a>
+  </header>
+  <section id="content" class="main-content">
+   <section class="slide-bar">
+      <h2  class="active-info" >
+        <a href="/">仓库列表</a>
+      </h2>
+      <dl>
+          <dd >
+	          <a href="/components/screen/wordCloud">
+	            <span>
+	            	zhouxiaojiang / <strong>btb-web</strong> </span>
+	          </a>
+        	</dd>
+        
+          <dd >
+          <a href="/components/screen/turn">
+            <span><strong>exchange</strong>/btb2</span>
+          </a>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="log-content">
+      
+	    <h2 class="log-header"> 发布记录</h2>
+	    <div class="current-version">
+	    	当前线上版本：<strong>1.2.3</strong>
+	    </div>
+	    <table class="log-table">
+	    	<thead>
+	    		<th style="width: 10%">
+	    			组
+	    		</th>
+	    		<th style="width: 15%">
+	    			仓库
+	    		</th>
+	    		<th style="width: 10%">
+	    			版本
+	    		</th>
+	    		<th style="width: 25%">
+	    			发布人
+	    		</th>
+	    		<th style="width: 25%">
+	    			发布时间
+	    		</th>
+	    		<th>
+	    			操作
+	    		</th>
+	    	</thead>
+	    	<tbody>
+	    		<tr>
+	    			<td>
+	    				zhouxiaojiang
+	    			</td>
+	    			<td>
+	    				repository
+	    			</td>
+	    			<td>
+	    				1.2.3
+	    			</td>
+	    			<td>
+	    				zhouxiaojiang@btb.com
+	    			</td>
+	    			<td>
+	    				2018-04-23 18:23:00
+	    			</td>
+	    			<td>
+	    				<a href="javascript:void(0)">回滚</a>
+	    				<a class="preview" href="#" target="_blank">预览</a>
+	    			</td>
+	    		</tr>
+	    	</tbody>
+	    </table>
+	    
+	    <div id="J_Page"></div>
+	    <script type="text/javascript" src="./main.js"></script>
+	    <script type="text/javascript">
+	    	const slp = new SimplePagination(12)
+			slp.init({
+			  container: '#J_Page',
+			  maxShowBtnCount: 3,
+			  onPageChange: state => {
+			  	console.log('pagination change:', state.pageNumber)
+			  }
+			})
+	    </script>
+    </section>
+
+  </section>
+  <div class="copyright">
+  	CopyRight &copy; 2018 BTB All Rights Reserved.
+  </div>
+</body>
+</html>

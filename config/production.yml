@@ -1,0 +1,16 @@
+# may be created by shellscript in production environment
+# may be not, it depend on my mood
+# mongo related
+MONGO:
+  URI: "mongodb://127.0.0.1:2701/dogdock"
+  USER: ddu
+  PWD: ddu4Mg!
+
+# token related
+JWT_SECRET: zm_token_prod
+
+# assets config
+assetsCDN:
+  env: production
+  host: cdn.52shangou.com
+  protocol: "//"

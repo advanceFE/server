@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel=icon sizes=any mask="" href="/log.png">
+	<title>前端构建日志</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		html,body {
+			background: #000;
+			color: #63cb47;
+			font-family: Consolas, Monaco, monospace;
+		}
+		.content {
+			/*border: solid #ddd 1px;
+			margin: 20px auto;
+			width: 800px;*/
+			padding: 20px;
+			word-wrap:break-word; 
+		}
+		.line {
+			padding-left: 15px;
+			position: relative;
+			margin-bottom: 10px;
+		}
+		.error {
+			color: #f00;
+		}
+		.line:before {
+			position: absolute;
+			/*top: 3px;*/
+			left: -5px;
+			content: '$';
+			color: #f00;
+			margin-right: 5px;
+			font-style: normal;
+			vertical-align: middle;
+
+		}
+		h1 {
+			font-size: 28px;
+			padding: 20px;
+			border-bottom: solid 1px #d8ae45;
+		}
+		h1 span {
+			vertical-align: middle;
+		}
+
+		h1 i {
+			border: solid 1px #d8ae45;
+	    border-radius: 3px;
+	    font-size: 12px;
+	    transform: scale(0.7);
+	    padding: 0 10px;
+	    color: #d8ae45;
+	    display: inline-block;
+	    vertical-align: 8px;
+	    margin-left: -18px;
+		}
+	</style>
+</head>
+<body>
+	<h1>
+		<span>构建日志</span>
+		<i>beta</i>
+	</h1>
+	<div class="content" id="J_Content">
+		{% for item in logs %}
+			<div class="line {% if item.type === 'error' %}error{% endif %}">
+				{{item.date}} - {{item.type}} - {{item.msg}}
+			</div>
+		{% endfor %}
+	</div>
+	<script>
+		(function() {
+			const elContent = document.querySelector('#J_Content')
+			function getLogs() {
+				fetch('/log', {
+			    method: 'POST',
+			    credentials: "include"
+			  })
+			  .then(response => response.json())
+			  .then(res => {
+			  	if(res.code === 1) {
+			  		render(res.data)
+			  	}
+			  })
+			}
+
+			function render(list) {
+				var html = ''
+				list.forEach(item => {
+					html += `<div class="line ${item.type === 'error' ? 'error' : ''}">
+						${item.date} - ${item.type} - ${item.msg}
+					</div>`
+				})
+				elContent.innerHTML = html
+			}
+			setInterval(getLogs, 5000)
+		})()
+	</script>
+</body>
+</html>

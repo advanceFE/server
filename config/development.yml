@@ -1,0 +1,14 @@
+# mongo related
+MONGO:
+  URI: "mongodb://192.168.11.155:27017/imgCdn"
+  USER: xiaomao
+  PWD: "*btb_+npm.."
+
+# token related
+JWT_SECRET: 'do-you-love-me?'
+
+# assets config
+assetsCDN:
+  env: develop
+  host: xxx
+  protocol: "//"

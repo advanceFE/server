@@ -1,0 +1,90 @@
+<!Doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Simple Transactional Email</title>
+    <style>
+      .fe-build-body {
+        width: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      .fe-build-table {
+        font-size: 12px;
+        min-width: 300px;
+        word-wrap: break-word;
+        word-break: break-all;
+        border: solid 1px #f1f1f1;
+        border-collapse: collapse;
+        color: #666;
+      }
+      .fe-build-table .name {
+        width: 80px;
+        background: #fcfcfc;
+        font-weight: 600;
+        font-size: 14px;
+        color: #333;
+      }
+      .fe-build-table .title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #000;
+        background: #f6f8fa;
+      }
+      .fe-build-table td {
+        padding: 10px;
+        border: solid 1px #f1f1f1;
+      }
+      .fe-build-title {
+        font-size: 18px;
+        padding: 20px 20px 20px 20px; 
+        border-bottom: solid 1px #eee;
+        margin-bottom: 20px;
+        margin: 0;
+      }
+      .fe-build-pre {
+        margin: 20px;
+        padding: 20px;
+        border: solid 1px #ddd;
+        background: #f6f6f6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body class="fe-build-body">
+    <h2 class="fe-build-title">基本信息</h2>
+    <table class="fe-build-table">
+      <tr>
+        <td colspan="2" class="title">前端{environment}环境构建提醒</td>
+      </tr>
+      <tr>
+        <td class="name">仓库地址：</td>
+        <td class="value">{sshUrl}</td>
+      </tr>
+      <tr>
+        <td class="name">sha：</td>
+        <td class="value">{gitVersionHash}</td>
+      </tr>
+      <tr>
+        <td class="name">msg: </td>
+        <td class="value">{message}</td>
+      </tr>
+      <tr>
+        <td class="name">开始时间：</td>
+        <td class="value">{startDate}</td>
+      </tr>
+      <tr>
+        <td class="name">完成时间：</td>
+        <td class="value">{completeDate}</td>
+      </tr>
+    </table>
+    <h2 class="fe-build-title">构建日志</h2>
+<pre class="fe-build-pre">
+${buildLog}
+</pre>
+  </body>
+</html>
