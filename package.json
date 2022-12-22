@@ -16,7 +16,7 @@
     "dns": "^0.2.2",
     "fs-extra": "^4.0.3",
     "js-yaml": "^3.10.0",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^2.2.0",
     "koa": "2.2.0",
     "koa-bodyparser": "^3.2.0",
